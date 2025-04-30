@@ -17,6 +17,7 @@ export const createPost = async (req, res) => {
 		}
 
 		if (img) {
+            console.log(img)
 			const uploadedResponse = await cloudinary.uploader.upload(img);
 			img = uploadedResponse.secure_url;
 		}
@@ -209,7 +210,7 @@ export const getUserPost = async (req, res) => {
         const { username } = req.params
         const user = await User.findOne({ username })
         if (!user) {
-            res.status(400).json({ error: "User not found" })
+           return res.status(400).json({ error: "User not found" })
         }
         const post = await Post.find({ user: user._id })
             .sort({ createdAt: -1 })
@@ -224,6 +225,6 @@ export const getUserPost = async (req, res) => {
         res.status(200).json(post)
     } catch (error) {
         console.log(`Error in getUserPost ${error.message}`)
-        res.status(500).json({ error: "Internal Server Error" })
+       return res.status(500).json({ error: "Internal Server Error" })
     }
 }

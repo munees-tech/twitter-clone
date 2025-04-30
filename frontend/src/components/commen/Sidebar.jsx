@@ -2,7 +2,7 @@ import XSvg from "../svgs/X";
 import { MdHomeFilled } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
 import { useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -27,17 +27,14 @@ const Sidebar = () => {
 			}
 		},
 		onSuccess: () => {
-			toast.success("Logout Sucessfully")
-			queryClient.invalidateQueries({
-				queryKey: ["authUser"]
-			})
+			queryClient.invalidateQueries({ queryKey: ["authUser"] });
 		},
 		onError: () => {
 			toast.error("Logout failed");
 		},
 	});
 
-	const {data : authUser} = useQuery({queryKey:["authUser"]})
+	const {data :authUser} = useQuery({queryKey:["authUser"]})
 	
 
 	return (

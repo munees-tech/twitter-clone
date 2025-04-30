@@ -16,7 +16,7 @@ const LoginPage = () => {
 	const queryClient = useQueryClient()
 	const {
 		mutate: loginMutation,
-		isPending,
+		isLoading, // Use isLoading instead of isPending
 		isError,
 		error,
 	} = useMutation({
@@ -30,21 +30,21 @@ const LoginPage = () => {
 					},
 					body: JSON.stringify({ username, password }),
 				});
-
+	
 				const data = await res.json();
-
+	
 				if (!res.ok) {
 					throw new Error(data.error || "Something went wrong");
 				}
 			} catch (error) {
-				throw new Error(error);
+				throw new Error(error.message || "Something went wrong");
 			}
 		},
 		onSuccess: () => {
-			toast.success("Login Success")
+			toast.success("Login Success");
 			queryClient.invalidateQueries({
-				queryKey: ["authUser"]
-			})
+				queryKey: ["authUser"],
+			});
 		},
 	});
 
@@ -90,7 +90,7 @@ const LoginPage = () => {
 						/>
 					</label>
 					<button className='btn rounded-full btn-primary text-white'>
-						{isPending ? <LoadingSpinner/> : "Login"}
+						{isLoading ? <LoadingSpinner/> : "Login"}
 					</button>
 					{isError && <p className='text-red-500'>{error.message}</p>}
 				</form>
