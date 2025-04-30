@@ -45,16 +45,16 @@ const App = () => {
     return (
         <div className='flex max-w-6xl mx-auto'>
             {/* Common component, because it's not wrapped with Routes */}
-            {authUser &&<Sidebar />}
-            <Routes>
-                <Route path='/' element={ <HomePage /> } />
-                <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/' />} />
-                <Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
-                <Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to='/login' />} />
-                <Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to='/login' />} />
-            </Routes>
-            {authUser && <RightPanal />}
-            <Toaster />
+            {authUser && <Sidebar />}
+			<Routes>
+				<Route path='/' element={authUser ? <HomePage /> : <Navigate to='/login' />} />
+				<Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/' />} />
+				<Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
+				<Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to='/login' />} />
+				<Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to='/login' />} />
+			</Routes>
+			{authUser && <RightPanal />}
+			<Toaster />
         </div>
     );
 };
