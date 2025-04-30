@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import base_url from "../components/constant/url"
+import {base_url} from "../components/constant/url"
 
 const useUpdateUserProfile = () => {
 	const queryClient = useQueryClient();
