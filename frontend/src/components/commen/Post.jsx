@@ -28,6 +28,7 @@ const Post = ({ post }) => {
 			try {
 				const res = await fetch(`${base_url}/api/posts/${post._id}`, {
 					method: "DELETE",
+                    credentials : "include"
 				});
 				const data = await res.json();
 
@@ -50,6 +51,7 @@ const Post = ({ post }) => {
 			try {
 				const res = await fetch(`${base_url}/api/posts/like/${post._id}`, {
 					method: "POST",
+                    credentials : "include"
 				});
 				const data = await res.json();
 				if (!res.ok) {
@@ -84,6 +86,7 @@ const Post = ({ post }) => {
 			try {
 				const res = await fetch(`${base_url}/api/posts/comment/${post._id}`, {
 					method: "POST",
+                    credentials : "include",
 					headers: {
 						"Content-Type": "application/json",
 					},
