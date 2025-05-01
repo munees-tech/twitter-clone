@@ -19,14 +19,13 @@ const App = () => {
 			try {
 					const res = await fetch(`${base_url}/api/auth/me`, {
 					method :"GET",
-					credentials: 'include',
+					credentials: "include",
 					headers : {
 						"Content-Type" : "application/json"
 					}
 				});
 				const data = await res.json();
-				console.log(authUser)
-				if (data.error);
+				if (data.error) return null;
 				if (!res.ok) {
 					throw new Error(data.error || "Something went wrong");
 				}
@@ -39,8 +38,13 @@ const App = () => {
 	
 
 
-	if (!authUser) return null;
-
+	if (isLoading) {
+		return (
+			<div className='h-screen flex justify-center items-center'>
+				<LoadingSpinner size='lg' />
+			</div>
+		);
+	}
 	return (
 		<div className='flex max-w-6xl mx-auto'>
 			{/* Common component, because it's not wrapped with Routes */}
