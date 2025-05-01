@@ -20,7 +20,7 @@ const app = express()
 const __dirname = path.resolve()
 
 app.use(cors({
-    origin: "http://localhost:3500",
+    origin: "https://twitter-clone-1-933p.onrender.com",
     credentials: true
 }));
 
