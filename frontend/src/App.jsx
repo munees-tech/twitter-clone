@@ -13,39 +13,38 @@ import LoadingSpinner from './components/commen/LoadingSpinner';
 import { Toaster } from 'react-hot-toast';
 
 const App = () => {
-  const { data: authUser, isLoading } = useQuery({
-		// we use queryKey to give a unique name to our query and refer to it later
+		const { data: authUser, isLoading } = useQuery({
 		queryKey: ["authUser"],
 		queryFn: async () => {
 			try {
-				const res = await fetch(`${base_url}/api/auth/me`);
+					const res = await fetch(`${base_url}/api/auth/me`, {
+					method :"GET",
+					credentials: 'include',
+					headers : {
+						"Content-Type" : "application/json"
+					}
+				});
 				const data = await res.json();
-				if (data.error) return null;
+				console.log(authUser)
+				if (data.error);
 				if (!res.ok) {
 					throw new Error(data.error || "Something went wrong");
 				}
-				console.log("authUser is here:", data);
 				return data;
 			} catch (error) {
 				throw new Error(error);
 			}
-		},
-		retry: false,
+		}
 	});
+	
 
 
-    if (isLoading) {
-        return (
-            <div className='flex justify-center items-center h-screen'>
-                <LoadingSpinner size='lg' />
-            </div>
-        );
-    }
+	if (!authUser) return null;
 
-    return (
-        <div className='flex max-w-6xl mx-auto'>
-            {/* Common component, because it's not wrapped with Routes */}
-            {authUser && <Sidebar />}
+	return (
+		<div className='flex max-w-6xl mx-auto'>
+			{/* Common component, because it's not wrapped with Routes */}
+			{authUser && <Sidebar />}
 			<Routes>
 				<Route path='/' element={authUser ? <HomePage /> : <Navigate to='/login' />} />
 				<Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/' />} />
@@ -55,8 +54,8 @@ const App = () => {
 			</Routes>
 			{authUser && <RightPanal />}
 			<Toaster />
-        </div>
-    );
+		</div>
+	);
 };
 
 export default App;

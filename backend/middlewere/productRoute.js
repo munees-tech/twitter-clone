@@ -12,7 +12,7 @@ try {
         return res.status(400).json({error:"Invaild Token"})
     }
     
-    const user = await User.findOne({_id : decode.userId}).select("-password")
+    const user = await User.findOne({_id:decode.userId}).select("-password")
 
     if(!user){
         return res.status(400).json({error:"User Not Found"})

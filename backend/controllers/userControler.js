@@ -98,6 +98,7 @@ export const updateUser = async (req, res) => {
 		let user = await User.findById(userId);
 		if (!user) return res.status(404).json({ message: "User not found" });
 
+		// Handle password update
 		if ((!newPassword && currentPassword) || (!currentPassword && newPassword)) {
 			return res.status(400).json({ error: "Please provide both current password and new password" });
 		}
@@ -113,39 +114,47 @@ export const updateUser = async (req, res) => {
 			user.password = await bcrypt.hash(newPassword, salt);
 		}
 
+		// Handle profile image upload
 		if (profileImg) {
 			if (user.profileImg) {
-				// https://res.cloudinary.com/dyfqon1v6/image/upload/v1712997552/zmxorcxexpdbh8r0bkjb.png
 				await cloudinary.uploader.destroy(user.profileImg.split("/").pop().split(".")[0]);
 			}
-
 			const uploadedResponse = await cloudinary.uploader.upload(profileImg);
 			profileImg = uploadedResponse.secure_url;
 		}
 
+		// Handle cover image upload
 		if (coverImg) {
 			if (user.coverImg) {
 				await cloudinary.uploader.destroy(user.coverImg.split("/").pop().split(".")[0]);
 			}
-
 			const uploadedResponse = await cloudinary.uploader.upload(coverImg);
 			coverImg = uploadedResponse.secure_url;
 		}
 
+		// Check for duplicate username
+		if (username && username !== user.username) {
+			const existingUser = await User.findOne({ username });
+			if (existingUser && existingUser._id.toString() !== userId.toString()) {
+				return res.status(400).json({ error: "Username already taken" });
+			}
+			user.username = username;
+		}
+
+		// Update other fields
 		user.fullname = fullname || user.fullname;
 		user.email = email || user.email;
-		user.username = username || user.username;
 		user.bio = bio || user.bio;
 		user.link = link || user.link;
 		user.profileImg = profileImg || user.profileImg;
 		user.coverImg = coverImg || user.coverImg;
+
 		user = await user.save();
-		// password should be null in response
-		user.password = null;
+		user.password = null; // don't expose password in response
 
 		return res.status(200).json(user);
 	} catch (error) {
 		console.log("Error in updateUser: ", error.message);
-		res.status(500).json({ error: error.message });
+		return res.status(500).json({ error: error.message });
 	}
 };

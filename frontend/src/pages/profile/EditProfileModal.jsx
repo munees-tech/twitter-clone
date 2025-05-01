@@ -22,7 +22,6 @@ const EditProfileModal = ({ authUser }) => {
 		if (authUser) {
 			setFormData({
 				fullName: authUser.fullName,
-				username: authUser.username,
 				email: authUser.email,
 				bio: authUser.bio,
 				link: authUser.link,
@@ -59,14 +58,6 @@ const EditProfileModal = ({ authUser }) => {
 								name='fullName'
 								onChange={handleInputChange}
 							/>
-							{/* <input
-								type='text'
-								placeholder='Username'
-								className='flex-1 input border border-gray-700 rounded p-2 input-md'
-								value={formData.username}
-								name='username'
-								onChange={handleInputChange}
-							/> */}
 						</div>
 						<div className='flex flex-wrap gap-2'>
 							<input

@@ -24,6 +24,7 @@ const Post = ({ post }) => {
                 credentials: "include",
             });
             const data = await res.json();
+            console.log(data)
 
             if (!res.ok) {
                 throw new Error(data.error || "Failed to fetch user data");
@@ -33,9 +34,11 @@ const Post = ({ post }) => {
         },
     });
 
+    console.log(post)
     const postOwner = post.user;
-    const isLiked = post.likes.includes(authUser._id);
-    const isMyPost = authUser._id === post.user._id;
+    console.log(postOwner)
+    const isLiked = authUser ? post.likes.includes(authUser._id) : false;
+    const isMyPost = authUser && post.user ? authUser._id === post.user._id : false;
     const formattedDate = formatPostDate(post.createdAt);
 
     const { mutate: deletePost, isPending: isDeleting } = useMutation({
@@ -184,9 +187,8 @@ const Post = ({ post }) => {
                                 <FaRegHeart className='w-4 h-4 cursor-pointer text-pink-500 ' />
                             )}
                             <span
-                                className={`text-sm  group-hover:text-pink-500 ${
-                                    isLiked ? "text-pink-500" : "text-slate-500"
-                                }`}
+                                className={`text-sm  group-hover:text-pink-500 ${isLiked ? "text-pink-500" : "text-slate-500"
+                                    }`}
                             >
                                 {post.likes.length}
                             </span>
