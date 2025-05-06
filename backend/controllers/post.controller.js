@@ -166,7 +166,7 @@ export const getLikedPosts = async (req, res) => {
                 select: "-password",
             })
             .populate({
-                path: "comments.user",
+                path: "comment.user",
                 select: "-password",
             });
 
